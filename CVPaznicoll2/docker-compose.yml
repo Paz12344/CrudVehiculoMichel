@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cvpaznicoll_app
+    volumes:
+      - .:/var/www
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db
+      - DB_PORT=5433
+      - DB_DATABASE=cvpaznicoll
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=michel12 
+
+  db:
+    image: postgres:13
+    container_name: cvpaznicoll_postgres
+    environment:
+      POSTGRES_DB: cvpaznicoll
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: michel12
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    ports:
+      - "5433:5433"
+
+volumes:
+  dbdata:
